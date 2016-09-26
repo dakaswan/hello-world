@@ -1,0 +1,183 @@
+//Dakota Swanson
+//CS 300
+//Program #1
+//Inventory Program
+
+1
+#include <iostream>
+#include <fstream>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <iomanip>
+using namespace std;
+
+	struct Part{
+			int part_number;
+			int quantity; //set input of part number to be between 1 and 100
+			float price_per_item;
+			string description;
+			float total;
+	}
+
+int main(){
+	Part *part_list = new Part[100];
+	ifstream inFile;
+	ofstream outFile;
+	inFile.open("inventory.txt");
+	
+	int decision, user_partNumber;
+	int index = 0;
+	float inventoryTotal = 0;
+	
+	
+	if(!inFile.fail()){
+		while(!inFile.eof())
+		{
+			for(index = 0; index < 100; index ++){
+				inFile >> part_list[index].part_number;
+				inFile >> part_list[index].quantity;
+				inFile >> part_list[index].price_per_item;
+				inFile >> part_list[index].total;
+				getline(inFile, part_list[index].description);}
+			}
+		}
+		if(inFile.fail()){
+			outFile.open("inventory.txt");
+			inFile.open("inventory.txt");
+			outFile.close();
+		}
+		
+		for(index = 0; index < 100; index++){
+			part_list[index].part_number = (index+1);
+			if (part_list[index].quantity == 0){
+				part_list[index].description = "Null";}
+			}
+			
+		do{
+			
+		int decision = 0;
+		
+	cout<<"Please enter a choice: ";
+	cout<<"1: Print Parts, prints all parts in inventory";
+	cout<<"2: Enter a new part";
+	cout<<"3: Modify a part, searches and modifies part info";
+	cout<<"4: Print total, prints the total price of whole inventory";
+	cout<<"5: Exits the program and writes inventory to disk";
+	cin >> decision;
+	
+	cout<<"You entered : " << decision;
+	
+	
+	
+		switch(decision){
+		case 1:
+			cout << "Inventory: \n";
+			for(index = 0; index < 100; index++){
+				if(part_list[index].quantity != '\0'){
+					
+					cout << part_list[index].part_number << " ";
+					cout << part_list[index].description << " ";
+					cout << part_list[index].quantity << " ";
+					cout << fixed << setprecision(2);
+					cout << "$" << part_list[index].price_per_item << " ";
+					cout << "$" << part_list[index].total << endl;
+					
+					
+			}
+		}
+		break;
+		
+		case 2:
+			cout<<"Enter item number: ";
+			cin >> user_partNumber;
+			user_partNumber--;
+			
+				if(user_partNumber > 100 || user_partNumber < 0){
+					cout << "Cannot be larger than 100 or less than 0. \n Please enter a new number...";
+				}
+				
+				if(part_list[user_partNumber].quantity != 0){
+					cout << "There is already a part listed in this position.";
+				}
+					
+			cout<<"Enter item description: ";
+			cin >> part_list[user_partNumber].description;
+			cout<<"Enter a quantity: ";
+			cin >> part_list[user_partNumber].quantity;
+			cout<<"Enter cost: ";
+			cin >> part_list[user_partNumber].price_per_item;
+			
+			part_list[user_partNumber].total = (part_list[user_partNumber].quantity * part_list[user_partNumber].price_per_item);
+	
+			cout<<"New Part Information: ";
+			cout<<part_list[user_partNumber].part_number << " ";
+			cout<<part_list[user_partNumber].description << " ";
+			cout<<part_list[user_partNumber].quantity << " ";
+			cout<<fixed << setprecision(2);
+			cout<< "$" << part_list[user_partNumber].price_per_item << " ";
+			cout<< "$" << part_list[user_partNumber].total;
+			
+			break;
+			
+		case 3:
+		
+			cout<< "Enter the corresponding part number you would like to change: ";
+			cin >> user_partNumber;
+			user_partNumber--;
+			cout << part_list[user_partNumber].part_number << " ";
+			cout << part_list[user_partNumber].description << " ";
+			cout <<part_list[user_partNumber].quantity << " ";
+			cout << fixed << setprecision(2);
+			cout << "$" << part_list[user_partNumber].price_per_item << " ";
+			cout << "$" << part_list[user_partNumber].total << endl;
+		cout << "Enter name of item: ";
+		cin >> part_list[user_partNumber].description;
+		cout << "Enter quantity on hand: ";
+		cin >> part_list[user_partNumber].quantity;
+		cout << "Enter individual cost of item: ";
+		cin >> part_list[user_partNumber].price_per_item;
+		
+		part_list[user_partNumber].total = (part_list[user_partNumber].quantity * part_list[user_partNumber].price_per_item);
+		
+		cout << "New part information: ";
+		cout << part_list[user_partNumber].part_number << " ";
+		cout << part_list[user_partNumber].description << " ";
+		cout << part_list[user_partNumber].quantity << " ";
+		cout << fixed << setprecision(2);
+		cout << "$" << part_list[user_partNumber].price_per_item;
+		cout << "$" << part_list[user_partNumber].total;
+		
+		break;
+		
+		
+	case 4:
+		for(index = 0; index < 100; index++){
+				inventoryTotal += part_list[index].total;
+			}
+		cout << "The total value of your inventory is: " << inventoryTotal;
+		break;
+		
+	default:
+		cout << "Please enter a valid choice";
+		break;
+		
+return 0;
+	}
+
+}while(decision != 5);
+	outFile.open("inventory.txt");
+	for(int i = 0; i < 100; i++){
+		outFile << part_list[i].part_number << " ";
+		outFile << part_list[i].quantity << " ";
+		outFile << part_list[i].price_per_item << " ";
+		outFile << part_list[i].total << " ";
+		outFile << part_list[i].description << " ";
+	}
+	outFile.close();
+	cout<<"Program Exited";
+	return 0;
+	exit(1);
+
+return 0;
+}
