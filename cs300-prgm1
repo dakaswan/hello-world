@@ -1,7 +1,7 @@
 //Dakota Swanson
 //CS 300
 //Program #1
-//Inventory Program
+//Inventory Program - designed to keep track of inventory for a hardware store
 
 1
 #include <iostream>
